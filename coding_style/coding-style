@@ -1,0 +1,41 @@
+C/C++ Coding-Style in Linux/Android Platform
+
+History:
+July 5th, 2012  - Draft
+
+MUST    - the role is a must to follow
+SHOULD  - the role is highly recommended.
+MIGHT   - the role is advised.
+
+MUST:
+1. There MUST be license declarations at the header of files. See template please.
+2. There MUST be function descriptions ahead of the functions. See template please.
+3. The naming of functions and variables MUST be all low-case. Words MUST be connected by `_' in a name.
+4. The indention MUST be four-space. No `table' accepted.
+5. The header files MUST be wrapped up by an unified macro, which is up-cased from the header file name. For example,
+    In hello-world-header.h:
+    #ifndef __HELLO_WORLD_HEADER_H__
+    #define __HELLO_WORLD_HEADER_H__
+    ...
+    #endif /* __HELLO_WORLD_HEADER_H__ */
+6. The header files MUST not contain any information of internal data or structures.
+7. The header file MUST include headers it requires by itself. No more, no less.
+8. All the files MUST follow the role of end-of-line in unix-style.
+
+SHOULD:
+1. The naming of functions and variables SHOULD be human-readable.
+2. The parenthness of `if', `else', `while', `do', `switch' and `for' etc. SHOULD follow the keywords. For example,
+    if (val == 5) {
+        ... ...;
+    }
+3. There SHOULD be description on the logic sections in functions.
+4. There SHOULD not be tailing spaces/tables in code files.
+
+MIGHT:
+1. The length of functions MIGHT be limited to 200-line.
+2. There MIGHT be blank lines among logic sections in one function.
+
+OTHERS:
+You can use auto-indention tool to format your code files.
+    indent -i4 -bli0 -nut -npsl -npcs -br -ce -lp -cli4 -il0 xxx.c yyy.h
+
