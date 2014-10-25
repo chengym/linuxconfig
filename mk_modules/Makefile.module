@@ -1,0 +1,21 @@
+PWD := $(shell pwd)
+EXTRA_CFLAGS += -O2 -I$(CWD)
+
+obj-m := fake.o
+
+### KDIR = /lib/modules/$(shell uname -r)/build
+#KDIR = /home/dafu/Lab/koobe-vizio-1.8.13-ota1-20110719/kernel/kernel
+KDIR = /home/marvell/work/koobe_1.8.13/kernel/kernel
+### KDIR = /home/dafu/Lab/rls-vizio-ota1-nf-cert/000/ota1-patched/kernel/kernel
+
+ARCH := arm
+CROSS_COMPILE := $(KDIR)/../../prebuilt/linux-x86/toolchain/arm-eabi-4.4.3/bin/arm-eabi-
+
+RM = rm -rf
+
+default:
+	$(MAKE) -C $(KDIR) M=$(PWD) CWD=$(PWD) modules
+
+clean:
+	$(MAKE) -C $(KDIR) M=$(PWD) CWD=$(PWD) clean
+

@@ -1,0 +1,25 @@
+LOCAL_PATH:= $(call my-dir)
+
+#-------------------------------
+# libscramble
+#-------------------------------
+include $(CLEAR_VARS)
+
+LOCAL_C_INCLUDES += ./*.h
+
+LOCAL_ASFLAGS := \
+    -Wa,-mcpu=iwmmxt2
+
+LOCAL_SHARED_LIBRARIES := libcutils
+LOCAL_SRC_FILES := \
+	asm_scramble.S c_scramble.c MrvlScramble.c
+
+LOCAL_PRELINK_MODULE := false
+
+LOCAL_MODULE := libscramble
+
+LOCAL_MODULE_TAGS := optional
+
+include $(BUILD_SHARED_LIBRARY)
+
+

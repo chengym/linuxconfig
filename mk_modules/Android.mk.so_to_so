@@ -1,0 +1,21 @@
+##########################################################################
+#
+# Makefile for the security manifest files.  
+#
+# This makefile copies: 
+#    * Copy security manifest files to /system/etc/security.
+#
+##########################################################################
+LOCAL_PATH:= $(call my-dir)
+include $(CLEAR_VARS)
+
+file := $(TARGET_OUT_ETC)/PlayReady/conf
+$(file) : $(LOCAL_PATH)/cfb/conf | $(ACP)
+	$(transform-prebuilt-to-target)
+	@mkdir -p $(TARGET_OUT_ETC)/PlayReady
+ALL_PREBUILT += $(file)
+
+LOCAL_PREBUILT_LIBS := $(LOCAL_PATCH)/lib/libplayready.so
+LOCAL_MODULE_TAGS := optional
+
+include $(BUILD_MULTI_PREBUILT)

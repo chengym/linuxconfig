@@ -1,0 +1,55 @@
+
+DEBUG = Y
+DEBUG_DROID = Y
+DEBUG_PROF = N
+
+CROSS_COMPILE = arm-marvell-linux-gnueabi-
+
+GCC = $(CROSS_COMPILE)gcc
+AR = $(CROSS_COMPILE)ar
+RM = rm -rf
+LN = ln -s
+
+INCS := -I. -I../inc -I../inc/omxil-1.1.2 -I../dep/wtpsp/inc -I../dep/openssl/inc -I../dep/playready/inc
+CFLAGS := -fPIC -Wall -O2 -mapcs
+
+ifeq ($(DEBUG), Y)
+CFLAGS += -DMRVL_DRM_PLAY_DBG
+ifeq ($(DEBUG_DROID), Y)
+INCS += -I../dep/droid/inc
+LN_SRC = _MrvlDrmPlayDbgDroid.h
+LN_DST = _MrvlDrmPlayDbg.h
+else
+LN_SRC = _MrvlDrmPlayDbgLinux.h
+LN_DST = _MrvlDrmPlayDbg.h
+endif # DEBUG_DROID
+ifeq ($(DEBUG_PROF), Y)
+CFLAGS += -DMRVL_DRM_PLAY_PROF
+DBG_OBJ += MrvlDrmPlayProf.o
+endif # DEBUG_PROF
+endif # DEBUG
+
+all: gen_lnk libmrvldrm.so libmrvldrm.a
+
+gen_lnk:
+	@$(RM) $(LN_DST)
+	@$(LN) $(LN_SRC) $(LN_DST)
+
+libmrvldrm.so : MrvlDrmPlay.o MrvlDrmPlayCore.o $(DBG_OBJ)
+	$(GCC) -shared -Wl,-soname,libmrvldrm.so -o libmrvldrm.so $^
+
+libmrvldrm.a : MrvlDrmPlay.o MrvlDrmPlayCore.o $(DBG_OBJ)
+	$(AR) rc libmrvldrm.a $^
+
+MrvlDrmPlay.o : MrvlDrmPlay.c
+	$(GCC) $(CFLAGS) $(INCS) -c $^ -o $@
+
+MrvlDrmPlayCore.o : MrvlDrmPlayCore.c
+	$(GCC) $(CFLAGS) $(INCS) -c $^ -o $@
+
+MrvlDrmPlayProf.o : MrvlDrmPlayProf.c
+	$(GCC) $(CFLAGS) $(INCS) -c $^ -o $@
+
+clean:
+	@$(RM) *.o *.so *.a $(LN_DST)
+
