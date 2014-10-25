@@ -1,0 +1,61 @@
+Git is a free and open source distributed version control system designed to handle everything from small to very large projects with speed and efficiency.
+
+This file introduce several cmd:
+================================================================================================================================
+basic:
+    git add/rm [filename]
+    git diff --stat
+    git status
+    git commit -asm ""
+    git push chengym@10.38.38.210:/git/tee_dev.git
+
+code-review:
+    git commit [-asm]/[-sm] ""
+    git commit --amend --sign      //for new patch
+    git commit [-a] --amend        //append top patch
+    git branch
+    ~/bin/gerrit.sh [branch_name]
+
+merge one branch to another branch:
+    git checkout -b feature_branch
+    #make changes
+    git commit -asm "feature commit" #save commit_ID
+    git checkout [dev_branch]
+    git cherry-pick [commit_ID]
+    ~/bin/gerrit.sh dev_branch
+    git branch -D feature_branch
+
+drop all-local modify:
+    git reset --hard HEAD
+    git clean -xdf
+drop single-local modify:
+    git checkout src/tw/api/crypto/tee_crypto_common.c
+
+add one file to top log:
+    git checkout HEAD^ -- src/tw/sec_os/minos/include/config.h
+
+make patch:
+    modify file you needed
+    git commit -a -m ""
+    git format-patch 1 
+use path:
+    git am [patch-name]
+
+check each line modified history log:
+		git blame <filename>
+		git log -p <filename>
+
+check log:
+    git log --pretty=raw
+    git log --oneline --graph
+
+make a tag:
+    git tag -a [tag_name]
+
+git commit --amend --author=chengym
+
+list sum time submmited:
+		git shortlog -s -n
+
+================================================================================================================================
+
