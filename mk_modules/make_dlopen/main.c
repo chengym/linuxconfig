@@ -4,21 +4,21 @@
 int main()
 {
     void *handle = NULL;
-    int (*getMaxLen)(int *sel,int N);
-    int sel[] = {1,2,5,4,5,8,6,5,9,5,4,5,4,1};
+    int (*_g_echo)();
 
-    handle = dlopen("./libgetmaxlen.so",RTLD_LAZY);
-    if(handle == NULL)
-    {
-        printf("dll loading error.\n");
+    handle = dlopen("./libecho.so", RTLD_LAZY);
+    if(!handle) {
+        printf("dll loading error\n");
+        return -1;
+    }
+
+    _g_echo = (int(*)())dlsym(handle, "echo");
+
+    if(NULL != dlerror()) {
+        printf("fun load error\n");
         return 0;
     }
 
-    getMaxLen = (int(*)(int *,int))dlsym(handle,"getMaxLen");
-    if(dlerror()!=NULL)
-    {
-        printf("fun load error.\n");
-        return 0;
-    }
-    printf("%d\n",getMaxLen(sel,15));
+    _g_echo();
+    return 0;
 }

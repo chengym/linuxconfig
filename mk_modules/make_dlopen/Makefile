@@ -2,21 +2,17 @@
 #export LD_LIBRARY_PATH=$(pwd)
 
 .PHONY: all clean
-CC=gcc
+CC = gcc
 RM= rm -fr
 MAIN:=main
-SRCS := getmaxlen.c
-OBJS := $(patsubst %.cxx,%.o,$(patsubst %.c,%.o,$(SRCS)))
-all: $(OBJS) MAIN
+SRCS := echo.c
+all: $(OBJS) $(MAIN)
 CFLAGS:= -Wall -O2
 
 $(MAIN):
-	$(CC) -fPIC -shared -o libgetmaxlen.so $(OBJS)
-	$(CC) –o $@ main.c -ldl
-
-%.o : %.c
-	$(CC) $(CFLAGS) -c $<
+	$(CC) -fPIC -shared -nostartfiles -o libecho.so $(SRCS)
+	$(CC) -o main main.c -ldl -rdynamic
 
 clean:
 	@ echo "Cleaning..."
-	$(RM) -f *.o $(OBJS) main libgetmaxlen.so .depend
+	$(RM) -f *.o $(OBJS) main libecho.so .depend
